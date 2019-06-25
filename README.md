@@ -35,7 +35,7 @@ Backend API, and authorization
 
 * GET request to this route will return list of private jokes
 
-*POST request to this route will need authorization by Headers: Authorization key where token should be placed
+* POST request to this route will need authorization by Headers: Authorization key where token should be placed
 * **Required field ** "joke*
 
 * PUT request to this route (with valid todo ID) will update joke
