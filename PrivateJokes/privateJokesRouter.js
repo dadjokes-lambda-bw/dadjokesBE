@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const Jokes = require('./publicJokesModel.js');
+const Jokes = require('./privateJokesModel.js');
+const restricted = require('../auth/restricted-middleware.js');
 
-router.get('/', (req, res) => {
+router.get('/', restricted, (req, res) => {
     Jokes.find()
         .then(jokes => {
             res.status(200).json(jokes)
@@ -11,15 +12,17 @@ router.get('/', (req, res) => {
         })
 })
 
-router.post('/', async (req, res) => {
+router.post('/', restricted, async (req, res) => {
+    req.body.user_id = req.decodedToken.subject
     try {
         const newJoke = await Jokes.add(req.body)
+        
+        
         res.status(201).json(newJoke)
     } catch(error){
         res.status(500).json(error)
     }
 })
-
 
 
 module.exports = router;
