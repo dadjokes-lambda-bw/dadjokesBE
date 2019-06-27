@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Jokes = require('./privateJokesModel.js');
 const restricted = require('../auth/restricted-middleware.js');
+const db = require('../database/dbConfig.js')
 
 router.get('/', restricted, (req, res) => {
     Jokes.find()
@@ -23,6 +24,29 @@ router.post('/', restricted, async (req, res) => {
         res.status(500).json(error)
     }
 })
+
+router.put('/:id', restricted, (req, res) => {
+    const { id } = req.params;
+  
+    if (!req.body.item) {
+      res.status(400).json({ errorMessage: 'Jokes cannot be left blank.' });
+    } else {
+      db('privateJokes')
+        .where({ id, user_id: req.decodedToken.subject })
+        .update(req.body)
+        .returning('id')
+        .then(count => {
+          if (count > 0) {
+            res.status(200).json(count);
+          } else {
+            res.status(404).json({ errorMessage: 'A joke with the specified ID does not exist.' });
+          }
+        })
+        .catch(err => {
+          res.status(500).json({ error: err, message: 'There was an error saving changes to your jokes.' });
+        });
+    }
+  });
 
 
 module.exports = router;
