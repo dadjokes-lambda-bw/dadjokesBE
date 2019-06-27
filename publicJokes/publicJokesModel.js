@@ -8,7 +8,7 @@ module.exports = {
 };
 
 function find() {
-    return db('publicJokes').select('id','joke');
+    return db('publicJokes').select('id','joke', 'votes');
   }
   
   function findBy(filter) {
