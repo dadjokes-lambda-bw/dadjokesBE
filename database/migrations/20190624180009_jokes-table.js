@@ -8,6 +8,9 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .unique();
 
+      tbl 
+      .integer('votes')
+
   })
   .createTable('privateJokes', tbl => {
       tbl.increments();
@@ -28,7 +31,7 @@ exports.up = function(knex, Promise) {
 
       tbl
       .integer('votes')
-      
+
 
   })
 
