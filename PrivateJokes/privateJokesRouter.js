@@ -28,11 +28,11 @@ router.post('/', restricted, async (req, res) => {
 router.put('/:id', restricted, (req, res) => {
     const { id } = req.params;
   
-    if (!req.body.item) {
+    if (!req.body.joke) {
       res.status(400).json({ errorMessage: 'Jokes cannot be left blank.' });
     } else {
       db('privateJokes')
-        .where({ id, user_id: req.decodedToken.subject })
+        .where({ id })
         .update(req.body)
         .returning('id')
         .then(count => {

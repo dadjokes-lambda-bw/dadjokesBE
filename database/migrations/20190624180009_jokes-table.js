@@ -23,7 +23,7 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .references('id')
       .inTable('users')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
   })
